@@ -1,0 +1,112 @@
+.puzzles-section {
+  padding: 2rem;
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.puzzles-section h2 {
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: #fff;
+}
+
+.puzzle-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.chess-board {
+  aspect-ratio: 1;
+  background: #312e2b;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.puzzle-info {
+  text-align: center;
+}
+
+.puzzle-quote {
+  background: #262421;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.puzzle-quote p {
+  font-size: 1rem;
+  color: #fff;
+  margin: 0 0 1rem 0;
+  line-height: 1.4;
+}
+
+.quote-author {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.gm-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #2f2f2f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8fb73e;
+  font-size: 1.5rem;
+  border: 2px solid #8fb73e;
+}
+
+.gm-avatar i {
+  opacity: 0.9;
+}
+
+.author-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.gm-title {
+  color: #8fb73e;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.author-name {
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.btn-solve-puzzles {
+  width: 100%;
+  background: #8fb73e;
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+}
+
+.btn-chess-today {
+  width: 100%;
+  background: #8fb73e;
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-solve-puzzles:hover,
+.btn-chess-today:hover {
+  background: #7a9934;
+} 

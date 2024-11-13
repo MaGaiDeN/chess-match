@@ -1,0 +1,129 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 2rem;
+  background: #262421;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.logo {
+  height: 64px;
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+  border-radius: 12px;
+}
+
+.brand-title {
+  display: flex;
+  gap: 0.25rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.brand-chess {
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.brand-match {
+  color: #8fb73e;
+  font-weight: 600;
+}
+
+.header-right {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-signup {
+  background: #262421;
+  color: #fff;
+  border: 1px solid #666;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-login {
+  background: #8fb73e;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-signup:hover {
+  background: #333;
+  border-color: #888;
+}
+
+.btn-login:hover {
+  background: #7a9934;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 0.5rem 1rem;
+  }
+
+  .brand-title {
+    font-size: 1.4rem;
+  }
+
+  .logo {
+    height: 48px;
+    border-radius: 10px;
+  }
+
+  .btn-signup, .btn-login {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 0.5rem;
+  }
+
+  .brand-title {
+    font-size: 1.2rem;
+  }
+
+  .logo {
+    height: 40px;
+    border-radius: 8px;
+  }
+
+  .btn-signup, .btn-login {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .brand-title {
+    display: none;
+  }
+} 
