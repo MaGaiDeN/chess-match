@@ -1,13 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
+import ChessboardComponent from '../Chessboard/Chessboard';
 import './ChessPuzzlesSection.css';
 
 const ChessPuzzlesSection = () => {
+  const [puzzleMessage, setPuzzleMessage] = useState('');
+
   return (
     <section className="puzzles-section">
       <h2>Solve Chess Puzzles</h2>
       <div className="puzzle-container">
-        <div className="chess-board">
-          {/* Aquí irá el componente del tablero */}
+        <ChessboardComponent onPuzzleMessage={setPuzzleMessage} />
+        <div className="info-puzzle">
+          <div className={`puzzle-status ${
+            puzzleMessage.includes('¡Excelente!') ? 'success' : 
+            puzzleMessage.includes('¡Correcto!') ? 'correct' :
+            puzzleMessage.includes('Incorrecto') ? 'error' : ''
+          }`}>
+            {puzzleMessage}
+          </div>
         </div>
         <div className="puzzle-info">
           <div className="puzzle-quote">
