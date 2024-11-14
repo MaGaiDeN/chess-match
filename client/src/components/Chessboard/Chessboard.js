@@ -1,186 +1,122 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Chessboard } from 'react-chessboard';
 import { Chess } from 'chess.js';
-import { loadPuzzles, getRandomPuzzle } from '../../services/puzzleService';
+import { loadPuzzlesFromPGN } from '../../services/puzzleService';
 import './Chessboard.css';
 
-const ChessboardComponent = ({ onPuzzleMessage }) => {
-  console.log('Renderizando ChessboardComponent');
-  
-  const [game, setGame] = useState(() => {
-    console.log('Inicializando estado game');
-    return new Chess();
-  });
-  
+const ChessboardComponent = () => {
+  const [position, setPosition] = useState('start');
   const [currentPuzzle, setCurrentPuzzle] = useState(null);
-  const [currentMoveIndex, setCurrentMoveIndex] = useState(0);
-  const [boardWidth, setBoardWidth] = useState(400);
+  const [solutionIndex, setSolutionIndex] = useState(0);
+  const [isComplete, setIsComplete] = useState(false);
+  const [message, setMessage] = useState('Cargando puzzle...');
+  
+  // Mantener una referencia del juego
+  const gameRef = useRef(new Chess());
 
-  useEffect(() => {
-    console.log('Ejecutando useEffect de carga de puzzle');
-    const loadRandomPuzzle = async () => {
-      try {
-        const puzzles = await loadPuzzles();
-        console.log('Puzzles cargados:', puzzles);
-
-        if (puzzles && puzzles.length > 0) {
-          const puzzle = getRandomPuzzle(puzzles);
-          console.log('Puzzle seleccionado:', puzzle);
-
-          const newGame = new Chess();
-          
-          newGame.clear();
-          
-          const cleanFen = puzzle.fen.trim();
-          console.log('FEN limpio:', cleanFen);
-          
-          try {
-            const success = newGame.load(cleanFen);
-            console.log('Estado del tablero después de cargar:', newGame.fen());
-            
-            if (success) {
-              console.log('FEN cargado exitosamente');
-              setGame(newGame);
-              setCurrentPuzzle(puzzle);
-              setCurrentMoveIndex(0);
-              
-              const movesForMate = Math.ceil(puzzle.solution.length / 2);
-              onPuzzleMessage(`${puzzle.turnToPlay === 'w' ? 'Blancas' : 'Negras'} juegan - Mate en ${movesForMate}`);
-            } else {
-              throw new Error('Error al cargar FEN');
-            }
-          } catch (error) {
-            console.error('Error específico al cargar FEN:', error.message);
-            try {
-              const alternativeGame = new Chess(cleanFen);
-              console.log('FEN cargado con método alternativo');
-              setGame(alternativeGame);
-              setCurrentPuzzle(puzzle);
-              setCurrentMoveIndex(0);
-              
-              const movesForMate = Math.ceil(puzzle.solution.length / 2);
-              onPuzzleMessage(`${puzzle.turnToPlay === 'w' ? 'Blancas' : 'Negras'} juegan - Mate en ${movesForMate}`);
-            } catch (altError) {
-              console.error('Error en método alternativo:', altError.message);
-            }
-          }
-        }
-      } catch (error) {
-        console.error('Error en loadRandomPuzzle:', error);
-      }
-    };
-
-    loadRandomPuzzle();
-  }, [onPuzzleMessage]);
-
-  useEffect(() => {
-    const updateDimensions = () => {
-      const container = document.querySelector('.board-wrapper');
-      if (container) {
-        const width = Math.min(container.offsetWidth, 400);
-        setBoardWidth(width);
-      }
-    };
-
-    window.addEventListener('resize', updateDimensions);
-    updateDimensions(); // Llamada inicial
-
-    return () => window.removeEventListener('resize', updateDimensions);
-  }, []);
-
-  const makeComputerMove = () => {
-    if (!currentPuzzle || !game || currentMoveIndex >= currentPuzzle.solution.length) {
-      console.log('Puzzle completado');
-      return;
-    }
-    
-    console.log('Realizando movimiento del computador');
-    console.log('Índice actual:', currentMoveIndex);
-    console.log('Turno actual:', game.turn());
-    console.log('Solución completa:', currentPuzzle.solution);
-    
+  const loadRandomPuzzle = useCallback(async () => {
     try {
-      if (game.turn() === 'b') {
-        const nextMove = currentPuzzle.solution[currentMoveIndex + 1];
-        if (!nextMove) {
-          console.log('No hay más movimientos');
-          return;
-        }
-
-        const move = game.move(nextMove);
-        if (move) {
-          console.log('Movimiento del computador realizado:', move.san);
-          setGame(new Chess(game.fen()));
-          setCurrentMoveIndex(prev => prev + 1);
-          
-          const movesLeft = Math.ceil((currentPuzzle.solution.length - currentMoveIndex - 2) / 2);
-          onPuzzleMessage(`Tu turno - ${movesLeft > 0 ? `Mate en ${movesLeft}` : 'Dale mate'}`);
-        }
+      const puzzles = await loadPuzzlesFromPGN();
+      
+      if (puzzles && puzzles.length > 0) {
+        const puzzle = puzzles[0];
+        console.log('Cargando puzzle:', puzzle);
+        
+        // Crear nueva instancia de Chess
+        const chess = new Chess();
+        chess.clear();
+        chess.load(puzzle.fen);
+        
+        // Actualizar la referencia
+        gameRef.current = chess;
+        
+        // Actualizar estados
+        setPosition(puzzle.fen);
+        setCurrentPuzzle(puzzle);
+        setSolutionIndex(0);
+        setIsComplete(false);
+        setMessage('Tu turno - Encuentra el mate en dos');
       }
     } catch (error) {
-      console.log('Puzzle completado');
+      console.error('Error cargando puzzle:', error);
+      setMessage('Error al cargar el puzzle');
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadRandomPuzzle();
+  }, [loadRandomPuzzle]);
 
   const onDrop = (sourceSquare, targetSquare) => {
-    console.log('Intento de movimiento:', sourceSquare, 'a', targetSquare);
-    if (!currentPuzzle || !game) return false;
+    if (isComplete) return false;
 
     try {
-      const move = game.move({
+      const move = gameRef.current.move({
         from: sourceSquare,
         to: targetSquare,
         promotion: 'q'
       });
 
-      if (!move) {
-        console.log('Movimiento inválido');
-        return false;
-      }
+      if (!move) return false;
 
-      console.log('Movimiento realizado:', move.san);
-      console.log('Movimiento esperado:', currentPuzzle.solution[currentMoveIndex]);
+      const expectedMove = currentPuzzle.solution[solutionIndex].replace('#', '');
+      const actualMove = move.san.replace('#', '');
+      const isMateMove = currentPuzzle.solution[solutionIndex].includes('#');
 
-      if (move.san === currentPuzzle.solution[currentMoveIndex]) {
-        setGame(new Chess(game.fen()));
-        setCurrentMoveIndex(prev => prev + 1);
+      if (actualMove === expectedMove) {
+        setPosition(gameRef.current.fen());
         
-        if (move.san.includes('#')) {
-          onPuzzleMessage('¡Excelente! ¡Puzzle completado!');
+        if (isMateMove && gameRef.current.isCheckmate()) {
+          setIsComplete(true);
+          setMessage('¡Excelente! ¡Has encontrado el mate! 🎉');
           return true;
         }
-        
-        onPuzzleMessage('¡Correcto! Pensando...');
+
+        setMessage('¡Correcto! Espera la respuesta...');
         
         setTimeout(() => {
-          makeComputerMove();
+          const opponentMove = currentPuzzle.solution[solutionIndex + 1];
+          if (!opponentMove) return;
+
+          gameRef.current.move(opponentMove.replace('#', ''));
+          setPosition(gameRef.current.fen());
+          setSolutionIndex(prev => prev + 2);
+          setMessage('Tu turno - Da mate');
         }, 500);
-        
+
         return true;
-      } else {
-        game.undo();
-        onPuzzleMessage('Movimiento incorrecto - Intenta de nuevo');
-        return false;
       }
+
+      gameRef.current.undo();
+      setMessage('Movimiento incorrecto. Intenta de nuevo');
+      return false;
     } catch (error) {
-      console.error('Error al realizar movimiento:', error);
+      console.error('Error en movimiento:', error);
       return false;
     }
   };
 
-  console.log('Estado actual del juego:', game?.fen());
-  
   return (
     <div className="chessboard-container">
-      <div className="board-wrapper">
-        <Chessboard 
-          position={game?.fen()}
-          onPieceDrop={onDrop}
-          boardWidth={boardWidth}
-          customDragLayer={false}
-          boardOrientation={currentPuzzle?.turnToPlay === 'b' ? 'black' : 'white'}
-          transitionDuration={200}
-        />
+      <Chessboard 
+        position={position}
+        onPieceDrop={onDrop}
+        boardOrientation="white"
+        arePremovesAllowed={false}
+        customBoardStyle={{
+          borderRadius: '4px',
+          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.5)'
+        }}
+      />
+      <div className="puzzle-status">
+        <p className={isComplete ? 'success-message' : 'message'}>
+          {message}
+        </p>
+        {currentPuzzle && !isComplete && (
+          <p className="move-counter">
+            Movimiento {Math.floor(solutionIndex/2) + 1} de {Math.ceil(currentPuzzle.solution.length/2)}
+          </p>
+        )}
       </div>
     </div>
   );

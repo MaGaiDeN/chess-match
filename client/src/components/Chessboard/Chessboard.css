@@ -1,9 +1,94 @@
 .chessboard-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  gap: 20px;
+  padding: 20px;
   width: 100%;
-  margin: 20px 0;
+  max-width: 600px;
+  margin: 0 auto;
+  transition: all 0.3s ease;
+}
+
+.chessboard-container > div:first-child {
+  width: 100% !important;
+  max-width: 560px;
+  aspect-ratio: 1;
+  transition: width 0.3s ease;
+}
+
+.puzzle-status {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 15px 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.message {
+  margin: 0;
+  font-size: 1.1em;
+  color: #333;
+  transition: font-size 0.3s ease;
+}
+
+.success-message {
+  margin: 0;
+  font-size: 1.2em;
+  color: #2ecc71;
+  font-weight: bold;
+  animation: pulse 2s infinite;
+  transition: font-size 0.3s ease;
+}
+
+.move-counter {
+  margin: 8px 0 0 0;
+  font-size: 0.9em;
+  color: #666;
+  transition: font-size 0.3s ease;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 768px) {
+  .chessboard-container {
+    padding: 15px;
+    max-width: 100%;
+  }
+  
+  .chessboard-container > div:first-child {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .chessboard-container {
+    padding: 10px;
+  }
+  
+  .puzzle-status {
+    padding: 10px 15px;
+  }
+  
+  .message, .success-message {
+    font-size: 1em;
+  }
+  
+  .move-counter {
+    font-size: 0.8em;
+  }
 }
 
 .board-wrapper {
