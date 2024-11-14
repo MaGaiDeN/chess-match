@@ -5,7 +5,8 @@ import { loadPuzzlesFromPGN } from '../../services/puzzleService';
 import './Chessboard.css';
 
 const ChessboardComponent = () => {
-  const [position, setPosition] = useState('start');
+  const initialPositionRef = useRef(null);
+  const [position, setPosition] = useState(null);
   const [currentPuzzle, setCurrentPuzzle] = useState(null);
   const [solutionIndex, setSolutionIndex] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
@@ -18,40 +19,27 @@ const ChessboardComponent = () => {
       const puzzles = await loadPuzzlesFromPGN();
       
       if (puzzles && puzzles.length > 0) {
-        const puzzle = puzzles[0];
-        console.log('Cargando puzzle:', puzzle);
-        console.log('Tipo de FEN:', typeof puzzle.fen);
+        const randomIndex = Math.floor(Math.random() * puzzles.length);
+        const puzzle = puzzles[randomIndex];
+        console.log(`Cargando puzzle ${randomIndex + 1} de ${puzzles.length}:`, puzzle);
         
         const game = new Chess();
-        console.log('Estado inicial del tablero:', game.fen());
-        
         const fen = puzzle.fen.trim();
-        console.log('FEN después de trim:', fen);
+        console.log('FEN a cargar:', fen);
         
-        try {
-          // Intentar cargar el FEN y verificar si la posición resultante coincide
-          game.load(fen);
-          const resultingFen = game.fen();
-          console.log('FEN cargado:', resultingFen);
-          
-          // Verificar si la posición se cargó correctamente comparando FENs
-          if (resultingFen !== fen) {
-            console.log('FEN original:', fen);
-            console.log('FEN resultante:', resultingFen);
-            throw new Error('La posición cargada no coincide con la esperada');
-          }
-          
-          gameRef.current = game;
-          setPosition(resultingFen);
-          setCurrentPuzzle(puzzle);
-          setSolutionIndex(0);
-          setIsComplete(false);
-          setMessage('Tu turno - Encuentra el mate en dos');
-          
-        } catch (fenError) {
-          console.error('Error detallado:', fenError);
-          throw new Error(`Error al cargar FEN: ${fenError.message}`);
-        }
+        game.load(fen);
+        const resultingFen = game.fen();
+        console.log('FEN cargado:', resultingFen);
+        
+        gameRef.current = game;
+        initialPositionRef.current = resultingFen;
+        setPosition(resultingFen);
+        console.log('Nueva posición establecida:', resultingFen);
+        
+        setCurrentPuzzle(puzzle);
+        setSolutionIndex(0);
+        setIsComplete(false);
+        setMessage(`Tu turno - ${puzzle.isMate ? 'Encuentra el mate' : 'Encuentra la mejor jugada'}`);
       }
     } catch (error) {
       console.error('Error cargando puzzle:', error);
@@ -62,6 +50,17 @@ const ChessboardComponent = () => {
   useEffect(() => {
     loadRandomPuzzle();
   }, [loadRandomPuzzle]);
+
+  useEffect(() => {
+    if (position === null && initialPositionRef.current) {
+      console.log('Restaurando posición inicial:', initialPositionRef.current);
+      setPosition(initialPositionRef.current);
+    }
+  }, [position]);
+
+  if (!position) {
+    return <div>Cargando...</div>;
+  }
 
   const onDrop = (sourceSquare, targetSquare) => {
     if (isComplete) return false;
@@ -134,6 +133,14 @@ const ChessboardComponent = () => {
           <p className="move-counter">
             Movimiento {Math.floor(solutionIndex/2) + 1} de {Math.ceil(currentPuzzle.solution.length/2)}
           </p>
+        )}
+        {isComplete && (
+          <button 
+            className="next-puzzle-button"
+            onClick={loadRandomPuzzle}
+          >
+            Siguiente puzzle
+          </button>
         )}
       </div>
     </div>
