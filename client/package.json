@@ -17,9 +17,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && npm run copy-puzzles",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "copy-puzzles": "mkdir -p build/data/puzzles && cp public/data/puzzles/mate-en-dos-processed.pgn build/data/puzzles/"
   },
   "browserslist": {
     "production": [

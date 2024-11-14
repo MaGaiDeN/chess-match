@@ -8,7 +8,9 @@
     "test": "cd client && npm test",
     "eject": "cd client && npm run eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d client/build --dotfiles true"
+    "deploy": "gh-pages -d client/build --dotfiles true",
+    "copy-puzzles": "mkdir -p client/build/data/puzzles && cp client/public/data/puzzles/mate-en-dos-processed.pgn client/build/data/puzzles/",
+    "prebuild": "npm run copy-puzzles"
   },
   "devDependencies": {
     "gh-pages": "^6.2.0"
