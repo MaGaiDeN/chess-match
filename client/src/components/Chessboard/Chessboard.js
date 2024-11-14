@@ -11,7 +11,6 @@ const ChessboardComponent = () => {
   const [isComplete, setIsComplete] = useState(false);
   const [message, setMessage] = useState('Cargando puzzle...');
   
-  // Mantener una referencia del juego
   const gameRef = useRef(new Chess());
 
   const loadRandomPuzzle = useCallback(async () => {
@@ -21,21 +20,38 @@ const ChessboardComponent = () => {
       if (puzzles && puzzles.length > 0) {
         const puzzle = puzzles[0];
         console.log('Cargando puzzle:', puzzle);
+        console.log('Tipo de FEN:', typeof puzzle.fen);
         
-        // Crear nueva instancia de Chess
-        const chess = new Chess();
-        chess.clear();
-        chess.load(puzzle.fen);
+        const game = new Chess();
+        console.log('Estado inicial del tablero:', game.fen());
         
-        // Actualizar la referencia
-        gameRef.current = chess;
+        const fen = puzzle.fen.trim();
+        console.log('FEN después de trim:', fen);
         
-        // Actualizar estados
-        setPosition(puzzle.fen);
-        setCurrentPuzzle(puzzle);
-        setSolutionIndex(0);
-        setIsComplete(false);
-        setMessage('Tu turno - Encuentra el mate en dos');
+        try {
+          // Intentar cargar el FEN y verificar si la posición resultante coincide
+          game.load(fen);
+          const resultingFen = game.fen();
+          console.log('FEN cargado:', resultingFen);
+          
+          // Verificar si la posición se cargó correctamente comparando FENs
+          if (resultingFen !== fen) {
+            console.log('FEN original:', fen);
+            console.log('FEN resultante:', resultingFen);
+            throw new Error('La posición cargada no coincide con la esperada');
+          }
+          
+          gameRef.current = game;
+          setPosition(resultingFen);
+          setCurrentPuzzle(puzzle);
+          setSolutionIndex(0);
+          setIsComplete(false);
+          setMessage('Tu turno - Encuentra el mate en dos');
+          
+        } catch (fenError) {
+          console.error('Error detallado:', fenError);
+          throw new Error(`Error al cargar FEN: ${fenError.message}`);
+        }
       }
     } catch (error) {
       console.error('Error cargando puzzle:', error);
@@ -61,12 +77,14 @@ const ChessboardComponent = () => {
 
       const expectedMove = currentPuzzle.solution[solutionIndex].replace('#', '');
       const actualMove = move.san.replace('#', '');
-      const isMateMove = currentPuzzle.solution[solutionIndex].includes('#');
+      
+      console.log('Movimiento esperado:', expectedMove);
+      console.log('Movimiento realizado:', actualMove);
 
       if (actualMove === expectedMove) {
         setPosition(gameRef.current.fen());
         
-        if (isMateMove && gameRef.current.isCheckmate()) {
+        if (solutionIndex === currentPuzzle.solution.length - 1) {
           setIsComplete(true);
           setMessage('¡Excelente! ¡Has encontrado el mate! 🎉');
           return true;
@@ -76,12 +94,12 @@ const ChessboardComponent = () => {
         
         setTimeout(() => {
           const opponentMove = currentPuzzle.solution[solutionIndex + 1];
-          if (!opponentMove) return;
-
-          gameRef.current.move(opponentMove.replace('#', ''));
-          setPosition(gameRef.current.fen());
-          setSolutionIndex(prev => prev + 2);
-          setMessage('Tu turno - Da mate');
+          if (opponentMove) {
+            gameRef.current.move(opponentMove.replace('#', ''));
+            setPosition(gameRef.current.fen());
+            setSolutionIndex(prev => prev + 2);
+            setMessage('Tu turno - Da mate');
+          }
         }, 500);
 
         return true;
