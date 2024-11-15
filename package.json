@@ -8,9 +8,7 @@
     "test": "cd client && npm test",
     "eject": "cd client && npm run eject",
     "predeploy": "npm run build",
-    "deploy": "cross-env NODE_OPTIONS=--max_old_space_size=4096 gh-pages -d client/build --dotfiles true --nojekyll true --maxFileLength 4096",
-    "copy-puzzles": "mkdir -p client/build/data/puzzles && cp client/public/data/puzzles/mate-en-dos-processed.pgn client/build/data/puzzles/",
-    "prebuild": "npm run copy-puzzles"
+    "deploy": "gh-pages -d client/build"
   },
   "devDependencies": {
     "gh-pages": "^6.2.0",
