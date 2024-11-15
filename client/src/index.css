@@ -1,0 +1,66 @@
+/* Importar las fuentes de Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@600;700;800;900&family=Roboto+Mono&family=Nunito:wght@400;600;700&display=swap');
+
+:root {
+  /* Variables de color */
+  --color-background: #0A2540;    /* Azul marino */
+  --color-accent: #83C5BE;        /* Verde menta */
+  --color-silver: #E0E2E4;        /* Plata */
+  --color-text: #FFFFFF;          /* Blanco */
+  --color-accent-hover: #6bada6;  /* Verde menta hover */
+  --color-background-secondary: #0d2f4f; /* Azul marino más claro */
+
+  /* Variables de fuentes */
+  --font-main: 'Montserrat', sans-serif;
+  --font-headers: 'Poppins', sans-serif;
+  --font-mono: 'Roboto Mono', monospace;
+  --font-special: 'Nunito', sans-serif;
+}
+
+/* Reset y estilos globales */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-main);
+  line-height: 1.6;
+}
+
+/* Estilos base globales */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-headers);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+p {
+  color: var(--color-text);
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-accent-hover);
+}
+
+button {
+  font-family: var(--font-main);
+  font-weight: 600;
+  transition: all 0.2s ease;
+  background: var(--color-accent);
+  color: var(--color-text);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  background: var(--color-accent-hover);
+} 

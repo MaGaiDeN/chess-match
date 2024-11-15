@@ -1,19 +1,23 @@
 .welcome-section {
   text-align: center;
   padding: 2rem 0;
-  color: white;
+  color: var(--color-text);
 }
 
 .main-title {
+  font-family: var(--font-headers);
   font-size: 3rem;
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.2;
   margin-bottom: 1.5rem;
+  color: var(--color-text);
 }
 
 .subtitle {
+  font-family: var(--font-headers);
+  font-weight: 600;
   font-size: 2.5rem;
-  color: #8f8f8f;
+  color: var(--color-silver);
 }
 
 .stats {
@@ -30,12 +34,13 @@
 }
 
 .stat-number {
-  font-size: 1.5rem;
+  font-family: var(--font-mono);
   font-weight: bold;
-  color: #8fb73e;
+  font-size: 1.5rem;
+  color: var(--color-accent);
 }
 
 .stat-label {
-  color: #8f8f8f;
+  color: var(--color-silver);
   font-size: 0.9rem;
 } 

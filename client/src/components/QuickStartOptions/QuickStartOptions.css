@@ -17,13 +17,13 @@
 }
 
 .play-online {
-  background: #8fb73e;
-  color: white;
+  background: var(--color-accent);
+  color: var(--color-text);
 }
 
 .play-computer {
-  background: #2f2f2f;
-  color: white;
+  background: var(--color-background-secondary);
+  color: var(--color-text);
 }
 
 .option-icon {
@@ -44,12 +44,16 @@
 .option-content h3 {
   margin: 0;
   font-size: 1.2rem;
+  font-family: var(--font-headers);
+  font-weight: 700;
 }
 
 .option-content p {
   margin: 0.5rem 0 0;
   font-size: 0.9rem;
   opacity: 0.8;
+  font-family: var(--font-main);
+  font-weight: 500;
 }
 
 .option-card:hover {

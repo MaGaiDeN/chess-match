@@ -1,13 +1,23 @@
+:root {
+  --color-background: #0A2540;    /* Azul marino */
+  --color-accent: #83C5BE;        /* Verde menta */
+  --color-silver: #E0E2E4;        /* Plata */
+  --color-text: #FFFFFF;          /* Blanco */
+  --color-accent-hover: #6bada6;  /* Verde menta hover */
+  --color-background-secondary: #0d2f4f; /* Azul marino más claro */
+}
+
 .puzzles-section {
   padding: 2rem;
   margin-top: 2rem;
   text-align: center;
+  background-color: var(--color-background);
 }
 
 .puzzles-section h2 {
   margin-bottom: 2rem;
   font-size: 2rem;
-  color: #fff;
+  color: var(--color-text);
 }
 
 .puzzle-container {
@@ -20,7 +30,7 @@
 
 .chess-board {
   aspect-ratio: 1;
-  background: #312e2b;
+  background: var(--color-background-secondary);
   border-radius: 4px;
   overflow: hidden;
 }
@@ -30,7 +40,7 @@
 }
 
 .puzzle-quote {
-  background: #262421;
+  background: var(--color-background-secondary);
   padding: 1.5rem;
   border-radius: 8px;
   margin-bottom: 1rem;
@@ -38,7 +48,7 @@
 
 .puzzle-quote p {
   font-size: 1rem;
-  color: #fff;
+  color: var(--color-text);
   margin: 0 0 1rem 0;
   line-height: 1.4;
 }
@@ -55,13 +65,13 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #2f2f2f;
+  background: var(--color-background-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #8fb73e;
+  color: var(--color-accent);
   font-size: 1.5rem;
-  border: 2px solid #8fb73e;
+  border: 2px solid var(--color-accent);
 }
 
 .gm-avatar i {
@@ -75,20 +85,20 @@
 }
 
 .gm-title {
-  color: #8fb73e;
+  color: var(--color-accent);
   font-weight: bold;
   font-size: 0.8rem;
 }
 
 .author-name {
-  color: #fff;
+  color: var(--color-silver);
   font-size: 0.9rem;
 }
 
 .btn-solve-puzzles {
   width: 100%;
-  background: #8fb73e;
-  color: white;
+  background: var(--color-accent);
+  color: var(--color-text);
   border: none;
   padding: 1rem;
   border-radius: 4px;
@@ -98,8 +108,8 @@
 
 .btn-chess-today {
   width: 100%;
-  background: #8fb73e;
-  color: white;
+  background: var(--color-accent);
+  color: var(--color-text);
   border: none;
   padding: 1rem;
   border-radius: 4px;
@@ -108,7 +118,7 @@
 
 .btn-solve-puzzles:hover,
 .btn-chess-today:hover {
-  background: #7a9934;
+  background: var(--color-accent-hover);
 }
 
 .chess-board-section {
@@ -129,26 +139,26 @@
   padding: 0.75rem;
   border-radius: 4px;
   font-size: 1.1rem;
-  font-weight: 500;
-  color: #8f8f8f;
-  background: #2b2b2b;
+  font-weight: 700;
+  color: var(--color-text);
+  background: var(--color-background-secondary);
   transition: all 0.3s ease;
 }
 
 .puzzle-status.success {
-  color: white;
-  background: #4CAF50;
+  color: var(--color-text);
+  background: var(--color-accent);
   animation: fadeIn 0.3s ease-in;
 }
 
 .puzzle-status.correct {
-  color: white;
-  background: #2196F3;
+  color: var(--color-text);
+  background: var(--color-accent);
   animation: fadeIn 0.3s ease-in;
 }
 
 .puzzle-status.error {
-  color: white;
+  color: var(--color-text);
   background: #f44336;
   animation: shake 0.3s ease-in-out;
 }
@@ -168,4 +178,20 @@
   0%, 100% { transform: translateX(0); }
   25% { transform: translateX(-5px); }
   75% { transform: translateX(5px); }
+}
+
+.message {
+    margin: 0;
+    font-size: 1.1em;
+    color: var(--color-text);
+    font-weight: 700;
+    transition: font-size 0.3s ease;
+}
+
+@media (max-width: 480px) {
+    .message, .success-message {
+        font-size: 1em;
+        color: var(--color-text);
+        font-weight: 700;
+    }
 } 

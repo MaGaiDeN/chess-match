@@ -1,13 +1,23 @@
+:root {
+  --color-background: #0A2540;    /* Azul marino */
+  --color-accent: #83C5BE;        /* Verde menta */
+  --color-silver: #E0E2E4;        /* Plata */
+  --color-text: #FFFFFF;          /* Blanco */
+  --color-accent-hover: #6bada6;  /* Verde menta hover */
+  --color-background-secondary: #0d2f4f; /* Azul marino más claro */
+}
+
 .App {
   min-height: 100vh;
-  background: #1b1b1b;
-  color: white;
+  background: var(--color-background);
+  color: var(--color-text);
 }
 
 .main-content {
   max-width: 1200px;
   margin: 0 auto;
   padding: 1rem;
+  background: var(--color-background);
 }
 
 * {
@@ -21,8 +31,32 @@
 button {
   font-family: inherit;
   transition: all 0.2s ease;
+  background: var(--color-accent);
+  color: var(--color-text);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 button:hover {
   transform: translateY(-1px);
+  background: var(--color-accent-hover);
+}
+
+/* Estilos globales adicionales */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-text);
+}
+
+p {
+  color: var(--color-text);
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-accent-hover);
 }

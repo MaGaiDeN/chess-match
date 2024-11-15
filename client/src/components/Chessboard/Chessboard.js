@@ -39,7 +39,7 @@ const ChessboardComponent = () => {
         setCurrentPuzzle(puzzle);
         setSolutionIndex(0);
         setIsComplete(false);
-        setMessage(`Tu turno - ${puzzle.isMate ? 'Encuentra el mate' : 'Encuentra la mejor jugada'}`);
+        setMessage(`Juegan ${gameRef.current.turn() === 'w' ? 'Blancas' : 'Negras'}`);
       }
     } catch (error) {
       console.error('Error cargando puzzle:', error);
@@ -131,7 +131,7 @@ const ChessboardComponent = () => {
         </p>
         {currentPuzzle && !isComplete && (
           <p className="move-counter">
-            Movimiento {Math.floor(solutionIndex/2) + 1} de {Math.ceil(currentPuzzle.solution.length/2)}
+            Mate en 2
           </p>
         )}
         {isComplete && (
