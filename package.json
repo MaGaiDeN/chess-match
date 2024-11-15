@@ -9,7 +9,7 @@
     "eject": "cd client && npm run eject",
     "predeploy": "npm run build",
     "deploy": "cross-env NODE_OPTIONS=--max_old_space_size=4096 gh-pages -d client/build --dotfiles true --nojekyll true --maxFileLength 4096",
-    "copy-puzzles": "if not exist client\\build\\data\\puzzles mkdir client\\build\\data\\puzzles && copy client\\public\\data\\puzzles\\mate-en-dos-processed.pgn client\\build\\data\\puzzles\\",
+    "copy-puzzles": "mkdir -p client/build/data/puzzles && cp client/public/data/puzzles/mate-en-dos-processed.pgn client/build/data/puzzles/",
     "prebuild": "npm run copy-puzzles"
   },
   "devDependencies": {
