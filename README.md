@@ -1,20 +1,35 @@
-echo "# Chess Match
+# Chess Match
 
-A modern chess platform built with React and Firebase.
+Una plataforma moderna de ajedrez construida con React y Firebase.
 
-## Features
-- Online chess matches
-- Play against computer
-- Chess puzzles
-- User authentication
+## Características
 
-## Tech Stack
-- React
-- Firebase
-- Express
-- Node.js
+* Partidas de ajedrez online
+* Jugar contra la computadora
+* Puzzles de ajedrez
+* Autenticación de usuarios
 
-## Setup
-1. Clone the repository
-2. Install dependencies with \`npm install\`
-3. Start the development server with \`npm start\`" > README.md
+## Stack Tecnológico
+
+* React
+* Firebase
+* Express
+* Node.js
+
+## Configuración
+
+1. Clona el repositorio
+2. Instala las dependencias:
+   ```bash
+   npm install
+   cd client && npm install
+   cd ../server && npm install
+   ```
+3. Configura las variables de entorno (.env)
+4. Inicia el servidor de desarrollo:
+   ```bash
+   # En /client
+   npm start
+   # En /server
+   npm start
+   ```
